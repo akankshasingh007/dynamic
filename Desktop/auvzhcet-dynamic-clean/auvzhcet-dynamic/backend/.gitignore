@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Local database files (regenerated on first run)
+database.sqlite
+db_fallback.json
+
+# Environment / secrets
+.env
