@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import './styles.css';
+import TextPressure from './TextPressure';
+import DecryptedText from './DecryptedText';
+import RotatingText from './RotatingText';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-// Vehicle images (using placeholder images, replace with actual URLs)
 const vehicleData = [
   {
     id: 1,
@@ -161,7 +163,7 @@ function authHeaders(token) {
 function Section({ id, title, eyebrow, children }) {
   return (
     <section id={id} className="section reveal">
-      <p className="eyebrow">{eyebrow}</p>
+      <p className="eyebrow">{eyebrow}}</p>
       <h2>{title}</h2>
       {children}
     </section>
@@ -222,7 +224,7 @@ export default function App() {
     <>
       <header>
         <button className="brand" onClick={() => navigate('home')}>
-          <span>◉</span> MTS AUV-ZHCET
+          <span>⊙</span> MTS AUV-ZHCET
         </button>
         <nav className={menu ? 'open' : ''}>
           {links.map(([id, label]) => (
@@ -334,11 +336,24 @@ function Home({ navigate }) {
       <section className="hero">
         <div className="hero-content">
           <div className="hero-text">
-            <h1>Autonomous Underwater Innovation at ZHCET</h1>
+            <h1>
+              <DecryptedText 
+                text="Autonomous Underwater Innovation"
+                speed={80}
+                sequential={true}
+                animateOn="view"
+                className="revealed"
+                encryptedClassName="encrypted"
+              />
+            </h1>
             <p>Designing, building, and deploying cutting-edge AUVs for international competitions and research since 2011.</p>
             <div className="hero-cta">
               <button className="btn btn-primary" onClick={() => navigate('projects')}>
-                Explore Our Vehicles →
+                <RotatingText 
+                  texts={['Explore Vehicles', 'View Fleet', 'See Projects']}
+                  rotationInterval={4000}
+                  mainClassName="rotating-button-text"
+                />
               </button>
               <button className="btn btn-secondary" onClick={() => navigate('about')}>
                 Learn More
@@ -412,7 +427,7 @@ function About() {
           if (line.startsWith('# ')) return <h2 key={i} style={{ marginTop: '2rem', marginBottom: '1rem' }}>{line.slice(2)}</h2>;
           if (line.startsWith('## ')) return <h3 key={i} style={{ marginTop: '1.5rem', marginBottom: '0.75rem', color: 'var(--accent)' }}>{line.slice(3)}</h3>;
           if (line.startsWith('- ')) return <li key={i} style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>{line.slice(2)}</li>;
-          if (line.startsWith('🎯')) return <p key={i} style={{ color: 'var(--primary)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
+          if (line.startsWith('🏄')) return <p key={i} style={{ color: 'var(--primary)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
           if (line.startsWith('✨')) return <p key={i} style={{ color: 'var(--accent)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
           if (line.startsWith('🏆')) return <p key={i} style={{ color: 'var(--success)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
           if (line.startsWith('🔧')) return <p key={i} style={{ color: 'var(--primary)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
@@ -492,7 +507,7 @@ function Projects() {
             >
               <div style={{ fontWeight: 600 }}>{vehicle.name}</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{vehicle.year}</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--accent)', marginTop: '0.25rem' }}>⦿ {vehicle.status}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--accent)', marginTop: '0.25rem' }}>⊙ {vehicle.status}</div>
             </button>
           ))}
         </div>
@@ -814,19 +829,11 @@ function Login({ login }) {
 function Admin({ token, user }) {
   const [tab, setTab] = useState('announcements');
   const [info, setInfo] = useState('');
-  const [announcements, setAnnouncements] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [members, setMembers] = useState([]);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (!token) return;
     fetch(`${API}/info`).then((r) => r.json()).then((x) => setInfo(x.content));
-    fetch(`${API}/announcements`).then((r) => r.json()).then(setAnnouncements);
-    fetch(`${API}/events`).then((r) => r.json()).then(setEvents);
-    fetch(`${API}/projects`).then((r) => r.json()).then(setProjects);
-    fetch(`${API}/members`).then((r) => r.json()).then(setMembers);
   }, [token]);
 
   if (!user || !['admin', 'developer'].includes(user.role)) {
@@ -850,15 +857,9 @@ function Admin({ token, user }) {
   return (
     <Section title="Admin Console" eyebrow="Management">
       <div className="admin-tabs">
-        {['announcements', 'events', 'projects', 'members', 'info'].map((t) => (
-          <button
-            key={t}
-            className={`tab-btn ${tab === t ? 'active' : ''}`}
-            onClick={() => setTab(t)}
-          >
-            {t.charAt(0).toUpperCase() + t.slice(1)}
-          </button>
-        ))}
+        <button className={`tab-btn ${tab === 'info' ? 'active' : ''}`} onClick={() => setTab('info')}>
+          Edit Info
+        </button>
       </div>
 
       {message && (
@@ -880,22 +881,6 @@ function Admin({ token, user }) {
           </button>
         </div>
       )}
-
-      {tab === 'announcements' && (
-        <div>
-          <h3>Current Announcements</h3>
-          <div className="admin-grid">
-            {announcements.map((a) => (
-              <div key={a.id} className="admin-card">
-                <div>
-                  <h4>{a.title}</h4>
-                  <p>{a.content.substring(0, 100)}...</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </Section>
   );
 }
@@ -903,24 +888,16 @@ function Admin({ token, user }) {
 function Dev({ token, user }) {
   const [pending, setPending] = useState([]);
   const [logs, setLogs] = useState([]);
-  const [db, setDb] = useState(null);
-  const [search, setSearch] = useState('');
   const [tab, setTab] = useState('timeline');
 
   const load = () => {
     if (!token) return;
-
     fetch(`${API}/dev/pending-users`, { headers: authHeaders(token) })
       .then((r) => r.json())
       .then(setPending);
-
     fetch(`${API}/dev/timeline`, { headers: authHeaders(token) })
       .then((r) => r.json())
       .then(setLogs);
-
-    fetch(`${API}/dev/database-inspect`, { headers: authHeaders(token) })
-      .then((r) => r.json())
-      .then(setDb);
   };
 
   useEffect(() => {
@@ -950,48 +927,30 @@ function Dev({ token, user }) {
     }
   };
 
-  const filteredLogs = logs.filter((l) =>
-    search === '' || Object.values(l).some((v) => String(v).toLowerCase().includes(search.toLowerCase()))
-  );
-
   return (
     <Section title="Developer Console" eyebrow="Dev Tools">
       <div className="admin-tabs">
-        {['timeline', 'access', 'database'].map((t) => (
-          <button
-            key={t}
-            className={`tab-btn ${tab === t ? 'active' : ''}`}
-            onClick={() => setTab(t)}
-          >
-            {t === 'timeline' && 'Timeline History'}
-            {t === 'access' && 'Access Manager'}
-            {t === 'database' && 'Database Monitor'}
-          </button>
-        ))}
+        <button className={`tab-btn ${tab === 'timeline' ? 'active' : ''}`} onClick={() => setTab('timeline')}>
+          Timeline
+        </button>
+        <button className={`tab-btn ${tab === 'access' ? 'active' : ''}`} onClick={() => setTab('access')}>
+          Access Manager
+        </button>
       </div>
 
       {tab === 'timeline' && (
-        <div>
-          <input
-            type="text"
-            placeholder="Search logs..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ width: '100%', marginBottom: '1rem', padding: '0.75rem', borderRadius: '6px' }}
-          />
-          <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
-            {filteredLogs.map((log) => (
-              <div key={log.id} className="admin-card" style={{ marginBottom: '1rem' }}>
-                <div>
-                  <h4 style={{ marginBottom: '0.25rem' }}>{log.action}</h4>
-                  <p style={{ marginBottom: '0.25rem' }}>{log.details}</p>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    {log.username} ({log.role}) • {new Date(log.timestamp).toLocaleString()}
-                  </p>
-                </div>
+        <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+          {logs.map((log) => (
+            <div key={log.id} className="admin-card" style={{ marginBottom: '1rem' }}>
+              <div>
+                <h4 style={{ marginBottom: '0.25rem' }}>{log.action}</h4>
+                <p style={{ marginBottom: '0.25rem' }}>{log.details}</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  {log.username} ({log.role}) • {new Date(log.timestamp).toLocaleString()}
+                </p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -1009,34 +968,13 @@ function Dev({ token, user }) {
                     <p>Role: {p.role}</p>
                     <p>Status: {p.status}</p>
                   </div>
-                  <button
-                    className="btn btn-small btn-primary"
-                    onClick={() => approve(p.id)}
-                  >
+                  <button className="btn btn-small btn-primary" onClick={() => approve(p.id)}>
                     Approve
                   </button>
                 </div>
               ))}
             </div>
           )}
-        </div>
-      )}
-
-      {tab === 'database' && db && (
-        <div>
-          <h3>Database Dump</h3>
-          <pre
-            style={{
-              background: 'rgba(0,0,0,0.3)',
-              padding: '1rem',
-              borderRadius: '6px',
-              overflow: 'auto',
-              maxHeight: '500px',
-              fontSize: '0.85rem'
-            }}
-          >
-            {JSON.stringify(db, null, 2)}
-          </pre>
         </div>
       )}
     </Section>
