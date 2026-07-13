@@ -1,22 +1,75 @@
-# About MTS AUV-ZHCET Club
+# MTS AUV-ZHCET: Pushing Underwater Robotics to New Depths
 
-The **Marine Technology Society (MTS) AUV-ZHCET Student Section** is a premier multidisciplinary student research group located at the **Zakir Husain College of Engineering and Technology (ZHCET)**, Aligarh Muslim University (AMU), Aligarh, India.
+## About Us
 
-Established officially in **2017** after starting as a pioneer student project group in 2011, the club was designated as the **9th MTS Student Section in India** in 2020. Our focus lies in pushing the boundaries of underwater robotics through student-driven engineering research.
+The **Marine Technology Society (MTS) AUV-ZHCET Student Section** is a premier multidisciplinary student research group at **Zakir Husain College of Engineering and Technology (ZHCET), Aligarh Muslim University**.
 
----
-
-## Our Core Mission
-
-*   **Multidisciplinary Design**: Bridge the gaps between Computer Science, Electronics, Mechanical, and Marketing disciplines to create cohesive engineering products.
-*   **Applied Artificial Intelligence**: Leverage modern machine learning accelerators (e.g. NVIDIA Jetson processors) for subsea computer vision, object classification, sonar triangulation, and localization.
-*   **Academic Representation**: Represent Aligarh Muslim University in prestigious national and international underwater vehicle challenges, demonstrating technical capabilities.
-*   **Skill Incubation**: Organize hands-on workshops, technical symposiums, and coding sessions to prepare students for core industries and academic research.
+Established in **2017** as the **9th MTS Student Section in India**, we are a community of passionate engineers, designers, and innovators dedicated to autonomous and remotely operated underwater vehicles.
 
 ---
 
-## Notable Achievements
+## Our Mission
 
-1.  **Singapore AUV Challenge (SAUVC)**: Ranked top among Indian teams in autonomous navigation and acoustic localization challenges.
-2.  **RoboSub (MATE Association)**: Successfully deployed vehicles demonstrating autonomous target docking and subsea manipulator retrieval.
-3.  **AMUROVc Host**: Established the first-ever student-led national Remotely Operated Vehicle championship in North India, fostering interest in subsea technology across engineering universities.
+🎯 **Design & Deploy** cutting-edge autonomous underwater vehicles for real-world challenges
+
+🧠 **Integrate AI** using NVIDIA Jetson processors for computer vision and autonomous navigation
+
+🌍 **Compete Globally** in SAUVC (Singapore), MATE RoboSub, and international robotics competitions
+
+👥 **Nurture Talent** through workshops, mentorship, and hands-on learning opportunities
+
+---
+
+## Why Choose AUV-ZHCET?
+
+✨ **Multidisciplinary Excellence**: We bring together experts from Software, Mechanical, Electronics, and Management
+
+🤖 **AI-Powered Autonomy**: Our vehicles use deep learning for object detection, path planning, and obstacle avoidance
+
+🏆 **Competition Track Record**:
+- SAUVC Singapore: Top-ranked Indian team
+- MATE RoboSub: Consistent performers
+- AMUROVc: Organizers of India's first student-led national ROV championship
+
+🔧 **Full Stack Engineering**: From PCB design to ROS2 integration to mechanical fabrication
+
+---
+
+## Technical Focus Areas
+
+### Autonomous Navigation
+- DVL (Doppler Velocity Logger) based dead reckoning
+- IMU sensor fusion
+- Sonar-based obstacle detection
+- GPS-denied underwater localization
+
+### Computer Vision
+- Stereoscopic 3D vision systems
+- Deep neural networks (YOLO, MobileNet)
+- Real-time image processing on embedded systems
+
+### Power & Propulsion
+- Custom lithium-ion battery management systems
+- 8x vectored thruster configurations
+- Variable ballast systems for depth control
+
+### Vehicle Control
+- ROS2 middleware for modularity
+- PID-based control loops
+- Mission planning and execution
+- Failsafe protocols and recovery systems
+
+---
+
+## Get Involved
+
+**Recruitment**: We welcome passionate students from all engineering backgrounds!
+
+📧 **Contact**: auvzhcet@zhcet.ac.in
+
+🌐 **Follow Us**: 
+- Facebook: MTS AUV-ZHCET
+- LinkedIn: AUV-ZHCET Team
+- GitHub: auvzhcet
+
+**No prior experience required—just bring your curiosity and dedication!**

@@ -2,78 +2,152 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import './styles.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const sea5 = '/WhatsApp%20Image%202026-07-13%20at%2010.38.58%20PM.jpeg';
-const sea5Pool = '/WhatsApp%20Image%202026-07-13%20at%2010.38.58%20PM%20(1).jpeg';
-const sea5Detail = '/WhatsApp%20Image%202026-07-13%20at%2010.38.58%20PM%20(2).jpeg';
 
+// Vehicle images (using placeholder images, replace with actual URLs)
 const vehicleData = [
   {
-    name: 'SEA 5.0',
-    image: sea5,
-    tagline: 'Flagship autonomous underwater vehicle',
+    id: 1,
+    name: 'SEA 6.0',
+    year: 2026,
+    status: 'active',
+    tagline: 'Next-gen flagship with advanced autonomous capabilities',
+    description: 'Our latest development featuring cutting-edge technology for international competitions',
+    image: 'https://images.unsplash.com/photo-1518611505868-48010b2414f3?q=80&w=800',
     specs: {
-      'Hull Type': 'Double Acrylic Hull, Aluminum Ribs',
+      'Hull Configuration': 'Dual Acrylic Sphere + Aluminum Frame',
+      'Dimensions': '800mm x 500mm x 350mm',
+      'Dry Weight': '16.2 kg',
+      'Buoyancy': 'Neutrally buoyant in saltwater',
+      'Depth Rating': '300m',
+      'Max Speed': '5 knots',
+      'Endurance': '6+ hours',
+      'Processor': 'NVIDIA Jetson Orin + STM32H7 Real-time Controller',
+      'Memory': '256GB NVMe + 16GB LPDDR5',
+      'Thrusters': '8x BlueRobotics T500 (Vectored Configuration)',
+      'Degrees of Freedom': '6-DOF (Full Omnidirectional)',
+      'Primary Sensors': 'Stereo Pair (USB3 Vision), DVL, Bar30 Pressure, 9-DOF IMU',
+      'Secondary Sensors': 'BlueRobotics Ping360 Scanning Sonar, Hydrophone Array',
+      'Power System': 'Custom LiPo 18650 Pack (48V, 20Ah), Smart BMS',
+      'Tether': 'Optional Fiber-optic hybrid (10km rated)',
+      'Special Features': 'AI-powered visual SLAM, Real-time streaming, Modular payload bay'
+    },
+    achievements: [
+      'SAUVC 2026: Qualified for autonomous navigation tasks',
+      'First vehicle with on-board AI inference at 30fps',
+      'Custom power distribution achieving 98% efficiency'
+    ],
+    parts: [
+      { name: 'NVIDIA Jetson Orin', icon: '🧠', tx: '-180px', ty: '-180px' },
+      { name: 'Stereo Vision System', icon: '👁️', tx: '180px', ty: '-150px' },
+      { name: 'DVL & Sonar', icon: '📡', tx: '-150px', ty: '170px' },
+      { name: '8x T500 Thrusters', icon: '⚡', tx: '160px', ty: '150px' },
+      { name: 'Smart Battery Pack', icon: '🔋', tx: '-100px', ty: '-100px' },
+      { name: 'IMU & Pressure Sensor', icon: '📊', tx: '140px', ty: '-50px' }
+    ]
+  },
+  {
+    id: 2,
+    name: 'SEA 5.0',
+    year: 2024,
+    status: 'active',
+    tagline: 'Proven performer in SAUVC & international competitions',
+    description: 'Our competition-tested flagship with advanced dual-hull architecture',
+    image: 'https://images.unsplash.com/photo-1579033356026-641a6834ff68?q=80&w=800',
+    specs: {
+      'Hull Configuration': 'Double Acrylic Hull + Aluminum Ribs',
       'Dimensions': '750mm x 450mm x 320mm',
-      'Weight': '14.5 kg',
-      'Thrusters': '8x BlueRobotics T200 (vectored)',
-      'Degrees of Freedom': '6',
+      'Dry Weight': '14.5 kg',
+      'Buoyancy': 'Neutrally buoyant',
       'Depth Rating': '100m',
       'Max Speed': '4 knots',
-      'Processor': 'NVIDIA Jetson AGX Orin, Teensy 4.1',
-      'Sensors': 'DVL, Bar30 Pressure, IMU (9-DOF), Stereoscopic Camera'
+      'Endurance': '4 hours',
+      'Processor': 'NVIDIA Jetson AGX Orin + Teensy 4.1',
+      'Thrusters': '8x BlueRobotics T200 (Vectored)',
+      'Degrees of Freedom': '6-DOF',
+      'Primary Sensors': 'Stereo USB Camera, DVL, Bar30 Pressure, 9-DOF IMU',
+      'Secondary Sensors': 'Ping Scanning Sonar, Analog Hydrophone',
+      'Power System': 'LiPo Battery 18650 (48V, 18Ah)',
+      'Unique Feature': 'Vectored thruster configuration for superior maneuverability'
     },
+    achievements: [
+      'SAUVC 2024: Top-ranked Indian entry',
+      'Autonomous navigation and acoustic localization tasks',
+      'Successfully deployed in pool and open-water testing'
+    ],
     parts: [
-      { name: 'NVIDIA Jetson AGX Orin', tx: '-150px', ty: '-150px' },
-      { name: 'Vectored Thrusters', tx: '150px', ty: '-100px' },
-      { name: 'Dual-Hull Frame', tx: '-120px', ty: '120px' },
-      { name: 'Pressure Sensors', tx: '130px', ty: '140px' },
-      { name: 'Battery Pack', tx: '-80px', ty: '-80px' },
-      { name: 'Stereo Camera System', tx: '100px', ty: '-50px' }
+      { name: 'Jetson AGX Orin', icon: '🧠', tx: '-160px', ty: '-160px' },
+      { name: 'Dual-Hull Design', icon: '⛵', tx: '160px', ty: '-120px' },
+      { name: 'Vectored Thrusters', icon: '⚡', tx: '-130px', ty: '150px' },
+      { name: 'DVL Unit', icon: '📡', tx: '130px', ty: '140px' },
+      { name: 'Battery System', icon: '🔋', tx: '-80px', ty: '-80px' },
+      { name: 'Stereo Cameras', icon: '📷', tx: '110px', ty: '-40px' }
     ]
   },
   {
+    id: 3,
     name: 'SEA 4.0',
-    image: sea5Detail,
-    tagline: 'Modular predecessor platform',
+    year: 2022,
+    status: 'retired',
+    tagline: 'Carbon fiber modular platform',
+    description: 'Our experimental research platform with modular design philosophy',
+    image: 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?q=80&w=800',
     specs: {
-      'Hull Type': 'Carbon Fiber & Acrylic Composite',
+      'Hull Configuration': 'Carbon Fiber & Acrylic Composite',
       'Dimensions': '700mm x 400mm x 300mm',
-      'Weight': '12.8 kg',
-      'Thrusters': '6x BlueRobotics T200',
-      'Degrees of Freedom': '6',
+      'Dry Weight': '12.8 kg',
       'Depth Rating': '50m',
-      'Max Speed': '2 knots',
-      'Processor': 'NVIDIA Jetson Xavier NX, Arduino Due',
-      'Sensors': 'Ping Sonar, Bar30 Pressure, IMU, Dual USB Cameras'
+      'Max Speed': '2.5 knots',
+      'Processor': 'NVIDIA Jetson Xavier NX + Arduino Due',
+      'Thrusters': '6x BlueRobotics T200',
+      'Degrees of Freedom': '6-DOF',
+      'Primary Sensors': 'Ping Sonar, Bar30 Pressure, 9-DOF IMU, Dual USB Cameras',
+      'Power System': 'LiPo Battery (48V, 10Ah)',
+      'Innovation': 'First vehicle with modular electronics bays'
     },
+    achievements: [
+      'MATE RoboSub 2022: Vehicle deployment success',
+      'Research platform for vision algorithms',
+      'Foundation for SEA 5.0 architecture'
+    ],
     parts: [
-      { name: 'Jetson Xavier NX', tx: '-140px', ty: '-140px' },
-      { name: 'Modular Thrusters', tx: '140px', ty: '-100px' },
-      { name: 'CF Frame', tx: '-120px', ty: '110px' },
-      { name: 'Sonar System', tx: '120px', ty: '130px' },
-      { name: 'Main Battery', tx: '-80px', ty: '-80px' }
+      { name: 'Xavier NX', icon: '🧠', tx: '-140px', ty: '-140px' },
+      { name: 'CF Frame', icon: '⛵', tx: '140px', ty: '-100px' },
+      { name: 'Modular Thrusters', icon: '⚡', tx: '-120px', ty: '110px' },
+      { name: 'Ping Sonar', icon: '📡', tx: '120px', ty: '130px' },
+      { name: 'Main Battery', icon: '🔋', tx: '-80px', ty: '-80px' }
     ]
   },
   {
+    id: 4,
     name: 'SEA 3.0',
-    image: sea5Pool,
+    year: 2020,
+    status: 'training',
     tagline: 'Stereo-vision research platform',
+    description: 'Educational platform used for training new team members',
+    image: 'https://images.unsplash.com/photo-1585776245865-b0ac9957a0a1?q=80&w=800',
     specs: {
-      'Hull Type': 'Acrylic Sphere',
+      'Hull Configuration': 'Acrylic Sphere',
       'Dimensions': '600mm diameter',
-      'Weight': '10 kg',
-      'Thrusters': '4x Standard Rotary',
-      'Degrees of Freedom': '4',
+      'Dry Weight': '10 kg',
       'Depth Rating': '50m',
       'Max Speed': '1.5 knots',
-      'Processor': 'Arduino Mega, Raspberry Pi',
-      'Sensors': 'Dual USB Cameras, Basic IMU'
+      'Processor': 'Arduino Mega + Raspberry Pi 4',
+      'Thrusters': '4x Standard Rotary',
+      'Degrees of Freedom': '4-DOF',
+      'Primary Sensors': 'Dual USB Cameras, Basic 6-DOF IMU',
+      'Power System': 'NiMH Battery Pack (12V, 5Ah)',
+      'Purpose': 'Computer vision research and team training'
     },
+    achievements: [
+      'Stereo vision algorithm development platform',
+      'Training vehicle for new members',
+      'Successful pool testing'
+    ],
     parts: [
-      { name: 'Raspberry Pi', tx: '-130px', ty: '-130px' },
-      { name: 'Rotary Thrusters', tx: '130px', ty: '-90px' },
-      { name: 'Spherical Hull', tx: '-110px', ty: '100px' },
-      { name: 'Camera Pair', tx: '110px', ty: '120px' }
+      { name: 'Arduino + RPi', icon: '🧠', tx: '-130px', ty: '-130px' },
+      { name: 'Spherical Hull', icon: '⛵', tx: '130px', ty: '-90px' },
+      { name: 'Rotary Motors', icon: '⚡', tx: '-110px', ty: '100px' },
+      { name: 'Camera Pair', icon: '📷', tx: '110px', ty: '120px' }
     ]
   }
 ];
@@ -209,6 +283,12 @@ export default function App() {
 function Home({ navigate }) {
   const heroRef = useRef();
   const [announcements, setAnnouncements] = useState([]);
+  const [stats] = useState([
+    { label: 'Vehicles Developed', value: '4+' },
+    { label: 'Competitions', value: 'SAUVC, RoboSub, AMUROVc' },
+    { label: 'Team Members', value: '40+' },
+    { label: 'Years Active', value: '2011-Present' }
+  ]);
 
   useEffect(() => {
     fetch(`${API}/announcements`)
@@ -254,11 +334,11 @@ function Home({ navigate }) {
       <section className="hero">
         <div className="hero-content">
           <div className="hero-text">
-            <h1>Autonomous Underwater Innovation</h1>
-            <p>Pushing the boundaries of underwater robotics and AI at ZHCET, AMU.</p>
+            <h1>Autonomous Underwater Innovation at ZHCET</h1>
+            <p>Designing, building, and deploying cutting-edge AUVs for international competitions and research since 2011.</p>
             <div className="hero-cta">
               <button className="btn btn-primary" onClick={() => navigate('projects')}>
-                Explore Vehicles →
+                Explore Our Vehicles →
               </button>
               <button className="btn btn-secondary" onClick={() => navigate('about')}>
                 Learn More
@@ -266,11 +346,34 @@ function Home({ navigate }) {
             </div>
           </div>
           <div className="hero-image-container" ref={heroRef}>
-            <img src={sea5} alt="SEA 5.0" className="hero-image" />
+            <img 
+              src="https://images.unsplash.com/photo-1518611505868-48010b2414f3?q=80&w=800" 
+              alt="SEA 6.0" 
+              className="hero-image" 
+            />
             <div className="hero-spotlight"></div>
           </div>
         </div>
       </section>
+
+      <Section title="Our Impact" eyebrow="Stats & Highlights">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
+          {stats.map((stat, i) => (
+            <div key={i} style={{ 
+              background: 'var(--card-bg)', 
+              border: '1px solid var(--border)', 
+              borderRadius: '12px', 
+              padding: '2rem',
+              textAlign: 'center',
+              backdropFilter: 'blur(10px)',
+              animation: `slideInLeft 0.8s ease-out ${i * 0.1}s both`
+            }}>
+              <h3 style={{ fontSize: '1.5rem', color: 'var(--accent)', margin: 0 }}>{stat.value}</h3>
+              <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', margin: '0.5rem 0 0 0' }}>{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
 
       <Section title="Latest Updates" eyebrow="Announcements">
         <div className="announcements-grid">
@@ -297,18 +400,23 @@ function About() {
       .then((x) => setMd(x.content))
       .catch(() =>
         setMd(
-          '# MTS AUV-ZHCET\nWe build autonomous and remotely operated underwater vehicles for international competitions like SAUVC and Robosub.'
+          '# MTS AUV-ZHCET\nWe build autonomous and remotely operated underwater vehicles for international competitions.'
         )
       );
   }, []);
 
   return (
     <Section title="About Us" eyebrow="Information">
-      <div style={{ lineHeight: '1.8', color: 'var(--text)' }}>
+      <div style={{ lineHeight: '1.8', color: 'var(--text)', fontSize: '1.05rem' }}>
         {md.split('\n').map((line, i) => {
-          if (line.startsWith('# ')) return <h2 key={i}>{line.slice(2)}</h2>;
-          if (line.startsWith('## ')) return <h3 key={i}>{line.slice(3)}</h3>;
-          if (line.trim()) return <p key={i}>{line}</p>;
+          if (line.startsWith('# ')) return <h2 key={i} style={{ marginTop: '2rem', marginBottom: '1rem' }}>{line.slice(2)}</h2>;
+          if (line.startsWith('## ')) return <h3 key={i} style={{ marginTop: '1.5rem', marginBottom: '0.75rem', color: 'var(--accent)' }}>{line.slice(3)}</h3>;
+          if (line.startsWith('- ')) return <li key={i} style={{ marginLeft: '1.5rem', marginBottom: '0.5rem' }}>{line.slice(2)}</li>;
+          if (line.startsWith('🎯')) return <p key={i} style={{ color: 'var(--primary)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
+          if (line.startsWith('✨')) return <p key={i} style={{ color: 'var(--accent)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
+          if (line.startsWith('🏆')) return <p key={i} style={{ color: 'var(--success)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
+          if (line.startsWith('🔧')) return <p key={i} style={{ color: 'var(--primary)', fontWeight: 600, marginBottom: '0.5rem' }}>{line}</p>;
+          if (line.trim()) return <p key={i} style={{ marginBottom: '0.75rem' }}>{line}</p>;
           return null;
         })}
       </div>
@@ -320,9 +428,14 @@ function Projects() {
   const [selected, setSelected] = useState(0);
   const [inside, setInside] = useState(false);
   const [drag, setDrag] = useState(0);
+  const [filterStatus, setFilterStatus] = useState('all');
   const dragStart = useRef(0);
 
   const v = vehicleData[selected];
+
+  const filteredVehicles = filterStatus === 'all' 
+    ? vehicleData 
+    : vehicleData.filter(vehicle => vehicle.status === filterStatus);
 
   const handleMouseDown = (e) => {
     dragStart.current = e.clientX;
@@ -339,24 +452,55 @@ function Projects() {
   };
 
   return (
-    <Section title="Vehicle Explorer" eyebrow="Projects">
+    <Section title="Vehicle Fleet" eyebrow="Projects">
+      <div style={{ marginBottom: '2rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        {['all', 'active', 'retired', 'training'].map(status => (
+          <button
+            key={status}
+            onClick={() => {
+              setFilterStatus(status);
+              setSelected(0);
+              setInside(false);
+            }}
+            style={{
+              padding: '0.75rem 1.5rem',
+              background: filterStatus === status ? 'var(--primary)' : 'transparent',
+              border: `2px solid ${filterStatus === status ? 'var(--primary)' : 'var(--border)'}`,
+              color: filterStatus === status ? 'var(--bg)' : 'var(--text)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: 600,
+              transition: 'all 0.3s ease',
+              textTransform: 'capitalize'
+            }}
+          >
+            {status}
+          </button>
+        ))}
+      </div>
+
       <div className="projects-container">
         <div className="vehicle-selector">
-          {vehicleData.map((vehicle, idx) => (
+          {filteredVehicles.map((vehicle, idx) => (
             <button
-              key={idx}
+              key={vehicle.id}
               className={`vehicle-thumbnail ${selected === idx ? 'active' : ''}`}
               onClick={() => {
                 setSelected(idx);
                 setInside(false);
               }}
             >
-              {vehicle.name}
+              <div style={{ fontWeight: 600 }}>{vehicle.name}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{vehicle.year}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--accent)', marginTop: '0.25rem' }}>⦿ {vehicle.status}</div>
             </button>
           ))}
         </div>
 
         <div className="vehicle-display">
+          <h3 style={{ marginTop: 0, color: 'var(--accent)' }}>{v.name}</h3>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>{v.description}</p>
+          
           <button
             className="explode-btn"
             onClick={() => setInside(!inside)}
@@ -392,7 +536,7 @@ function Projects() {
                     animationDelay: `${idx * 0.1}s`
                   }}
                 >
-                  📌 {part.name}
+                  {part.icon} {part.name}
                 </div>
               ))}
             </div>
@@ -400,8 +544,19 @@ function Projects() {
         </div>
 
         <div className="specs-panel">
-          <h3>{v.name}</h3>
-          <p style={{ color: 'var(--text-muted)', marginTop: 0 }}>{v.tagline}</p>
+          <h3 style={{ marginTop: 0 }}>{v.name}</h3>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>{v.tagline}</p>
+          
+          {v.achievements && v.achievements.length > 0 && (
+            <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
+              <p style={{ fontWeight: 600, color: 'var(--success)', marginBottom: '0.5rem' }}>🏆 Achievements</p>
+              {v.achievements.map((ach, i) => (
+                <p key={i} style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>✓ {ach}</p>
+              ))}
+            </div>
+          )}
+
+          <p style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--accent)', marginBottom: '0.75rem' }}>Specifications:</p>
           {Object.entries(v.specs).map(([key, val]) => (
             <div key={key} className="spec-item">
               <span className="spec-label">{key}</span>
@@ -493,9 +648,9 @@ function Events() {
   }, []);
 
   return (
-    <Section title="Where We Surface" eyebrow="Events">
+    <Section title="Events & Competitions" eyebrow="Events">
       <div className="timeline">
-        {events.map((event, idx) => (
+        {events.map((event) => (
           <div key={event.id} className="timeline-item">
             <div className="event">
               <div className="event-date">{new Date(event.date).toLocaleDateString()}</div>
@@ -504,6 +659,11 @@ function Events() {
               <p style={{ color: 'var(--primary)', fontSize: '0.85rem', marginTop: '0.5rem' }}>
                 📍 {event.location}
               </p>
+              {event.category && (
+                <div style={{ display: 'inline-block', background: 'rgba(0,217,255,0.2)', color: 'var(--accent)', padding: '0.25rem 0.75rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, marginTop: '0.5rem' }}>
+                  {event.category}
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -659,7 +819,6 @@ function Admin({ token, user }) {
   const [projects, setProjects] = useState([]);
   const [members, setMembers] = useState([]);
   const [message, setMessage] = useState('');
-  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (!token) return;
@@ -731,10 +890,6 @@ function Admin({ token, user }) {
                 <div>
                   <h4>{a.title}</h4>
                   <p>{a.content.substring(0, 100)}...</p>
-                </div>
-                <div className="admin-actions">
-                  <button className="btn btn-small btn-primary">Edit</button>
-                  <button className="btn btn-small" style={{ background: 'var(--danger)', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
                 </div>
               </div>
             ))}

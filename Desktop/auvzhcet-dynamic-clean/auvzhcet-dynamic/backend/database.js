@@ -52,7 +52,6 @@ JsonDB.prototype.save = function() {
 };
 
 JsonDB.prototype.run = function(sql, params, callback) {
-  // Simple router for INSERT/UPDATE/DELETE queries
   const self = this;
   setTimeout(() => {
     try {
@@ -276,73 +275,102 @@ function initDatabase() {
 }
 
 function seedMockData(targetDb) {
+  // Announcements
   const insertAnn = "INSERT INTO announcements (title, content, date, type, author) VALUES (?, ?, ?, ?, ?)";
-  targetDb.run(insertAnn, ['Recruitment Drive 2026 Opened', 'MTS AUV-ZHCET Club is now recruiting passionate members across software, hardware, electronics, and marketing teams. Apply before the deadline!', '2026-09-10', 'important', 'admin']);
-  targetDb.run(insertAnn, ['SAUVC 2026 Singapore Success', 'We are proud to announce that our new vehicle SEA 5.0 completed autonomous navigation tasks at SAUVC and secured an outstanding rank!', '2026-03-24', 'general', 'admin']);
+  targetDb.run(insertAnn, ['🏆 SAUVC 2026 Registration Open', 'Singapore Autonomous Underwater Vehicle Challenge 2026 is now accepting team registrations. Deadline: February 15, 2026. Register your team here!', new Date().toISOString().split('T')[0], 'competition', 'auvzhcet']);
+  targetDb.run(insertAnn, ['🎉 SEA 6.0 Development Complete', 'Our latest vehicle, SEA 6.0, has successfully completed pool testing with all autonomous navigation tasks passing validation tests.', new Date().toISOString().split('T')[0], 'achievement', 'auvzhcet']);
+  targetDb.run(insertAnn, ['📋 Recruitment Drive 2026', 'Join MTS AUV-ZHCET! We are recruiting passionate students for Software, Mechanical, Electronics, and Management teams. No prior experience required!', new Date().toISOString().split('T')[0], 'recruitment', 'auvzhcet']);
 
+  // Events
   const insertEvent = "INSERT INTO events (title, description, date, location, category) VALUES (?, ?, ?, ?, ?)";
-  targetDb.run(insertEvent, ['Singapore AUV Challenge (SAUVC 2026)', 'International level underwater robotics challenge for student teams.', '2026-03-20', 'Singapore', 'Competition']);
-  targetDb.run(insertEvent, ['AMUROVc Remotely Operated Vehicle Competition', 'National level ROV competition hosted at ZHCET, Aligarh Muslim University.', '2026-11-15', 'AMU Pool, Aligarh', 'Hosting']);
-  targetDb.run(insertEvent, ['Autonomous Navigation Workshop', 'A hands-on workshop explaining ROS2, OpenCV, and NVIDIA Jetson implementation.', '2026-08-05', 'ZHCET Seminar Hall', 'Workshop']);
+  targetDb.run(insertEvent, ['Singapore AUV Challenge (SAUVC) 2026', 'International level underwater robotics competition featuring autonomous navigation, target recognition, and acoustic challenges.', '2026-06-15', 'Marina Bay, Singapore', 'International']);
+  targetDb.run(insertEvent, ['MATE ROV Competition 2026', 'Student robotics competition organized by MATE (Marine Advanced Technology Education).', '2026-07-20', 'Various Locations', 'International']);
+  targetDb.run(insertEvent, ['AMUROVc 2026', 'National level ROV competition hosted by AMU. Organized by AUV-ZHCET team.', '2026-09-10', 'AMU Pool, Aligarh', 'National']);
+  targetDb.run(insertEvent, ['ROS2 & Autonomous Navigation Workshop', 'Hands-on workshop covering ROS2 basics, sensor fusion, path planning, and autonomous vehicle programming.', '2026-03-20', 'ZHCET, AMU', 'Workshop']);
 
+  // Projects (Vehicles)
   const insertProject = "INSERT INTO projects (name, description, specs, image, status) VALUES (?, ?, ?, ?, ?)";
   targetDb.run(insertProject, [
-    'SEA 5.0',
-    'Our flagship autonomous underwater vehicle featuring advanced dual-hull mechanics, custom power distributor systems, and AI-enabled vision tracking.',
+    'SEA 6.0',
+    'Latest generation flagship with NVIDIA Jetson Orin and advanced 6-DOF control.',
     JSON.stringify({
-      hull: 'Double Acrylic Hull, Aluminum Ribs',
-      dimensions: '750mm x 450mm x 320mm',
-      weight: '14.5 kg',
-      sensors: 'DVL, Bar30 Pressure, IMU (9-DOF), Stereoscopic Camera',
-      processor: 'NVIDIA Jetson AGX Orin, Teensy 4.1',
-      thrusters: '8x BlueRobotics T200 thrusters in vector configuration'
+      'Hull': 'Dual Acrylic Sphere + Aluminum Frame',
+      'Weight': '16.2 kg',
+      'Depth': '300m',
+      'Processor': 'NVIDIA Jetson Orin',
+      'Thrusters': '8x T500 (Vectored)'
     }),
-    'https://images.unsplash.com/photo-1583244964261-2db904db198e?q=80&w=600',
+    'https://images.unsplash.com/photo-1518611505868-48010b2414f3?q=80&w=400',
     'active'
   ]);
   targetDb.run(insertProject, [
-    'SEA 4.0',
-    'Predecessor vehicle designed with carbon fiber reinforcement, standard modular electronics bays, and ROS-based controls.',
+    'SEA 5.0',
+    'Competition-tested vehicle with proven track record at SAUVC.',
     JSON.stringify({
-      hull: 'Carbon Fiber and Acrylic Composite',
-      dimensions: '700mm x 400mm x 300mm',
-      weight: '12.8 kg',
-      sensors: 'Ping Sonar, Bar30 Pressure, IMU, Dual USB Cameras',
-      processor: 'NVIDIA Jetson Xavier NX, Arduino Due',
-      thrusters: '6x BlueRobotics T200 thrusters'
+      'Hull': 'Double Acrylic Hull',
+      'Weight': '14.5 kg',
+      'Depth': '100m',
+      'Processor': 'Jetson AGX Orin',
+      'Thrusters': '8x T200 (Vectored)'
     }),
-    'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?q=80&w=600',
-    'retired'
+    'https://images.unsplash.com/photo-1579033356026-641a6834ff68?q=80&w=400',
+    'active'
   ]);
 
+  // Members
   const insertMember = "INSERT INTO members (name, designation, image, enrollment_no, faculty_no, course, branch, one_liner, email, linkedin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   targetDb.run(insertMember, [
-    'Tanu Singh',
-    'Lead Developer / Coordinator',
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400',
-    'GH1234',
+    'Akanksha Singh',
+    'Project Lead & Software Architecture',
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300',
+    'GH2024101',
     '24COB201',
     'B.Tech',
     'Computer Engineering',
-    'Building self-navigating submersibles with intelligent control layers.',
+    'Designing autonomous underwater vehicles with AI-powered computer vision.',
+    'akanksha.singh@zhcet.ac.in',
+    'https://linkedin.com/in/akanksha-singh'
+  ]);
+  targetDb.run(insertMember, [
+    'Tanu Singh',
+    'Mechanical Design Lead',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300',
+    'GH2024102',
+    '24MEB305',
+    'B.Tech',
+    'Mechanical Engineering',
+    'Building robust underwater vehicle structures with hydrodynamic optimization.',
     'tanu.singh@zhcet.ac.in',
-    'https://linkedin.com/in/tanu-singh-demo'
+    'https://linkedin.com/in/tanu-singh'
   ]);
   targetDb.run(insertMember, [
     'Ahmad Khan',
-    'Electronics Lead',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400',
-    'GH5678',
+    'Electronics & Power Systems',
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300',
+    'GH2024103',
     '24ELB104',
     'B.Tech',
     'Electronics Engineering',
-    'Designing robust PCB shields and high-current power distribution systems.',
+    'Designing custom PCBs and power management systems for autonomous vehicles.',
     'ahmad.khan@zhcet.ac.in',
-    'https://linkedin.com/in/ahmad-khan-demo'
+    'https://linkedin.com/in/ahmad-khan'
+  ]);
+  targetDb.run(insertMember, [
+    'Fatima Ahmed',
+    'Vision & AI Systems',
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=300',
+    'GH2024104',
+    '24COB202',
+    'B.Tech',
+    'Computer Engineering',
+    'Implementing deep learning models for underwater object detection and tracking.',
+    'fatima.ahmed@zhcet.ac.in',
+    'https://linkedin.com/in/fatima-ahmed'
   ]);
 
+  // Timeline
   const insertLog = "INSERT INTO timeline_logs (timestamp, username, role, action, details) VALUES (?, ?, ?, ?, ?)";
-  targetDb.run(insertLog, [new Date().toISOString(), 'system', 'system', 'database_initialization', 'Database seeded with default mock records and user accounts']);
+  targetDb.run(insertLog, [new Date().toISOString(), 'system', 'system', 'database_initialization', 'Database seeded with default mock records, vehicles, team members, and announcements']);
 }
 
 // Export database client
